@@ -1,6 +1,5 @@
 Rails.application.routes.draw do
-
-    resources :users, only: %i[create update]
+    resources :users, only: %i[update]
     post 'signup', to: 'authentication#signup'
-    post 'refresh', to: 'authentication#refresh'
+    post 'login', to: 'authentication#login'
 end

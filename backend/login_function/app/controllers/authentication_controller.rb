@@ -40,9 +40,11 @@ def login
     }
 
   else
-   render status: :unauthorized
+   render json: { errors: @user.errors.full_messages}, status: :unauthorized
   end
 end
+
+private
 
 def create_token(user_id)
   expiration = 30.minutes.from_now.to_i  # 30分後のタイムスタンプ
@@ -62,10 +64,8 @@ def refresh
 
 end
 
-private
-
-    def user_params
-      params.require(:user).permit(:name, :email, :password)
-    end
+def user_params
+  params.require(:user).permit(:name, :email, :password)
+end
 
 end
