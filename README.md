@@ -1,1 +1,1 @@
-loginとsignupをJWT認証込みで実装済み
+loginとsignupをJWT認証込みでReactとrails apiで実装済み
