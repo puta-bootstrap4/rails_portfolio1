@@ -1,0 +1,2 @@
+frontend:React backend:Rails API でログイン機能とサインアップ機能を実装した。JWT認証も実装。最終的にはタスク管理アプリにする。
+まだ途中。
