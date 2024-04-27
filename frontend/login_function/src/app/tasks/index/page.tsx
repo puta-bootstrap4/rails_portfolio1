@@ -1,41 +1,61 @@
 'use client';
-import { headers } from "next/headers";
-import axios, { AxiosError } from 'axios';
-import React,{ useState } from "react";
+import axios from 'axios';
+import React,{ useState,useEffect } from "react";
 import { useRouter } from "next/navigation";
 
 
-export default function tasksindex(){
-    const handleGetTaskIndex = async(event:React.FormEvent<HTMLFormElement>) =>{
+export default function TasksIndex(){
     const router = useRouter();
+
     const [error,setError] = useState('');
-    const [successmsg,setSuccessmsg] = useState('');
+    const [tasks,setTasks] = useState<Task[]>([]);
+    type Task = {
+        id: number;
+        name: string;
+        description: string;
+    };
+
+    const handleGetTaskIndex = async() =>{
+
     try{
-    const response = await axios.get("http://localhost:3001/tasks/index",{
+    const res = await axios.get("http://localhost:3001/tasks/index",{
     headers:{
-        Authorization: 'Bearer ${token}'
+        Authorization: `Bearer ${localStorage.getItem('accessToken')}`
     }
     });
-    const tasks = response.data
+    setTasks(res.data)
     } catch(e:unknown){
-        if(axios.isAxiosError(error)) {
-            if (error.response) {
+        if(axios.isAxiosError(e)) {
+            if (e.response) {
               setError('仕事一覧を取得できませんでした');
-              setSuccessmsg('');
               router.push("/")
     
             } else{
-              setError('HTTPリクエストが正常に送信されたが、レスポンスが受信されませんでした');
-              setSuccessmsg('');
+              setError('HTTPリクエストが正常に送信されましたが、レスポンスが受信されませんでした');
               router.push("/")
     
             }
           } else{
             setError('予期しないエラーが起こりました');
-            setSuccessmsg('');
             router.push("/")
     
           }
+
     }
+    handleGetTaskIndex();
+
     }
+    return(
+        <>
+        <div>
+            <h1>Task List</h1>
+            <ul>
+                {tasks && tasks.map(task => (
+                    <li key={task.id}>タスク名:{task.name}説明:{task.description}</li>
+                ))}
+            </ul>
+            {error && <p>{error}</p>}
+        </div>
+        </>
+    );
 }

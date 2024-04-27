@@ -22,9 +22,10 @@ export default function Login(){
     }
     });
     const{token, refresh_token,expires_at} = response.data.user;
-    localStorage.setItem('accessToken',token)
-    localStorage.setItem('refreshToken',refresh_token)
-    localStorage.setItem('expiresAt',expires_at)
+    localStorage.setItem('accessToken',token);
+    localStorage.setItem('refreshToken',refresh_token);
+    localStorage.setItem('expiresAt',expires_at);
+    router.push("/tasks/index");
     } catch(error:unknown){
         if(axios.isAxiosError(error)) {
             if (error.response) {
@@ -32,7 +33,7 @@ export default function Login(){
               setSuccessmsg('');
               router.push("/")
             } else{
-              setError('The request was made but noresponse was received');
+              setError('HTTPリクエストが正常に送信されましたが、レスポンスが受信されませんでした');
               setSuccessmsg('');
               router.push("/")
             }
