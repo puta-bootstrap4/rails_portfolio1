@@ -1,6 +1,7 @@
 Rails.application.routes.draw do
   get 'tasks/index', to: 'tasks#index'
   get 'tasks/show'
+  post 'tasks/create', to: 'tasks#create'
   get 'tasks/new'
   get 'tasks/edit'
   get 'tasks/update'
