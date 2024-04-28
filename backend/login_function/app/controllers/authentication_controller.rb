@@ -47,7 +47,7 @@ end
 private
 
 def create_token(user_id)
-  expiration = 30.minutes.from_now.to_i  # 30分後のタイムスタンプ
+  expiration = 15.minutes.from_now.to_i  # 15分後のタイムスタンプ
   payload = { user_id: user_id, exp: expiration }
   JWT.encode(payload, Rails.application.secret_key_base)
 end
