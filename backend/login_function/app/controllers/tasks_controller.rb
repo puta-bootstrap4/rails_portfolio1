@@ -3,12 +3,16 @@ class TasksController < ApplicationController
 
   def index
     @tasks = @current_user.tasks
-    render json: @tasks
+    render json: @tasks.as_json(only: [:id,:name])
   end
+
 
   def show
+    task = Task.find(params[:id])
+    render json: task
+  rescue ActiveRecord::RecordNotFound
+    render json: { error: "Task not found" }, status: :not_found
   end
-
 
   def edit
   end
@@ -32,8 +36,17 @@ class TasksController < ApplicationController
   end
 
   private 
+  def current_user_exist
+    if @current_user == nil
+
+    else
+    end
+  end
+  def task_params_show
+    params.require
+  end
 
   def task_params
-    params.require(:task).permit(:name,:description)
+    params.require(:task).permit(:name,:description,:id)
   end
 end
