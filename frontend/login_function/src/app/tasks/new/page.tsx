@@ -1,3 +1,6 @@
+// newページに直接きたらtopページになるように実装すること
+
+
 'use client';
 import {useState} from 'react';
 import axios from 'axios';
@@ -10,7 +13,6 @@ export default function TasksNew (){
     const params = new URLSearchParams();
     params.append("key1","登録完了しました");
     const href = `/tasks/index?${params}`;
-
 
     const handleTasksCreate = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
