@@ -20,7 +20,7 @@ export default function TasksShow ({ params }: { params: { id: string } }){
             created_at: Date;
             updated_at: Date;
             user_id: number;
-        };
+    };
         
 
     const handleGetTaskShow= async() =>{
