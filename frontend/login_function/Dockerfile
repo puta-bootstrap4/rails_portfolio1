@@ -11,4 +11,4 @@ RUN npm install
 COPY . /app
 
 # アプリケーションを起動
-CMD ["npm", "start"]
+CMD ["sh", "-c", "npm run build && npm start"]
