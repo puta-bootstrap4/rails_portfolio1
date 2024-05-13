@@ -3,7 +3,6 @@ import axios from 'axios';
 import React,{ useState,useEffect } from "react";
 import { useRouter } from "next/navigation";
 import Link  from 'next/link';
-import { useSearchParams } from 'next/navigation';
 import {Suspense} from 'react';
 import Mycomponent from '../mycomponent';
 export default function TasksIndex(){
@@ -66,7 +65,7 @@ export default function TasksIndex(){
             <Link href="/tasks/new">新規作成</Link>
             <ul>
                 {tasks && tasks.map(task => (
-                    <li key={task.id}>タスク名:{task.name}<Link href={`/tasks/${task.id}/show`}><button>詳細</button></Link><Link href="/tasks/destroy"><button>削除</button></Link></li>
+                    <li key={task.id}>タスク名:{task.name}<Link href={`/tasks/${task.id}/show`}><button>詳細</button></Link><Link href={`/tasks/${task.id}/destroy`}><button>削除</button></Link></li>
                 ))}
             </ul>
             {error && <p>{error}</p>}
