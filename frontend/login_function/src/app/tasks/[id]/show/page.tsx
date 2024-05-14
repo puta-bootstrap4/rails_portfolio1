@@ -72,6 +72,7 @@ export default function TasksShow ({ params }: { params: { id: string } }){
                 <div>
                     <h1>{task.name}</h1>
                     <p>{task.description}</p>
+                    <Link href={`/tasks/${task.id}/edit`}><button>編集</button></Link><Link href={`/tasks/${task.id}/destroy`}><button>削除</button></Link>
                 </div>
             ) : (
                 <p>Loading task details...</p>

@@ -10,6 +10,7 @@ export default function AuthenticationPage(){
   const [error, setError] = useState('');
   const router = useRouter();  // ここで常にuseRouterを呼び出す
   const params = new URLSearchParams();
+
   const handleSignup = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
