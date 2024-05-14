@@ -9,7 +9,7 @@ export default function AuthenticationPage(){
   const [name, setName] = useState('');
   const [error, setError] = useState('');
   const router = useRouter();  // ここで常にuseRouterを呼び出す
-  const params = new URLSearchParams();
+  const param = new URLSearchParams();
 
   const handleSignup = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -27,22 +27,37 @@ export default function AuthenticationPage(){
       localStorage.setItem('refreshToken', refresh_token);
       localStorage.setItem('expiresAt', expires_at);
       
-      params.append("key1","登録完了しました");
-      const href = `/?${params}`;
+      param.append("key1","登録完了しました");
+      const href = `/?${param}`;
 
       router.push(href);
-    } catch (error: unknown) {
-      if (axios.isAxiosError(error)) {
-        if (error.response) {
-          setError('登録できませんでした');
-        } else {
-          setError('HTTPリクエストが正常に送信されましたが、レスポンスが受信されませんでした');
+    } catch(e:unknown){
+      if(axios.isAxiosError(e)) {
+          if (e.response) {
+              if (e.response.status === 401){
+                  param.append("key1","ログインしてください");
+                  const hreftop = `/?${param}`;
+                  router.push(hreftop);
+              }
+              else{
+                  param.append("key1","登録できませんでした");
+                  const href = `/?${param}`;
+                  router.push(href);
+              }
+          } else{
+              param.append("key1","HTTPリクエストが正常に送信されましたが、レスポンスが受信されませんでした");
+              const href = `/?${param}`;
+              router.push(href);
+  
+          }
+        } else{
+              param.append("key1","予期しないエラーが起こりました");
+              const href = `/?${param}`;
+              router.push(href);
+  
         }
-      } else {
-        setError('予期しないエラーが起こりました');
-        //router.push("/");
-      }
-    }
+
+  }
   };
 
   return (

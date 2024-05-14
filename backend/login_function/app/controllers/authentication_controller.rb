@@ -1,13 +1,13 @@
 class AuthenticationController < ApplicationController
   
 def signup
-  @user = User.new(user_params)
-  if @user.save
-    @token = create_token(@user.id)
+  user = User.new(user_params)
+  if user.save
+    token = create_token(user.id)
     refresh_token = SecureRandom.hex(20)
     refresh_token_expires_at = 24.hours.from_now  # 24時間後に設定
     ActiveRecord::Base.transaction do
-      @user.update(refresh_token: refresh_token, refresh_token_expires_at: refresh_token_expires_at)
+      user.update!(refresh_token: refresh_token, refresh_token_expires_at: refresh_token_expires_at)
     end
     render json: {
         user: {
@@ -19,7 +19,10 @@ def signup
   else
     render json: { errors: user.errors.full_messages }, status: :unprocessable_entity
   end
+rescue => e
+  render json: { error: e.message }, status: :internal_server_error
 end
+
 
 def login
   user = User.find_by_email(params[:user][:email])
@@ -31,9 +34,7 @@ def login
 
     render json: {
       user: {
-        #email: @user.email,
         token: token,
-        #name: @user.name,
         refresh_token: refresh_token,
         expires_at: refresh_token_expires_at
       }
