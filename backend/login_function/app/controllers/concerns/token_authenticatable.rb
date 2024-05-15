@@ -1,25 +1,31 @@
 module TokenAuthenticatable
-    extend ActiveSupport::Concern
-  #current_userがnilならtopページに遷移するような仕組みができていない
-    included do
-      before_action :authenticate_user_from_token!
+  extend ActiveSupport::Concern
+
+  included do
+    before_action :authenticate_user_from_token!
+  end
+
+  private
+
+  def authenticate_user_from_token!
+    token = request.headers['Authorization']&.split(' ')&.last
+    unless token
+      return render json: { error: 'Unauthorized' }, status: :unauthorized
     end
-  
-    private
-  
-    def authenticate_user_from_token!
-      token = request.headers['Authorization']&.split(' ')&.last
-      return render json: { error: 'Unauthorized' }, status: :unauthorized unless token
-  
-      payload = decode_token(token)
-      @current_user = User.find_by(id: payload['user_id']) if payload
-      render json: { error: 'Unauthorized' }, status: :unauthorized unless @current_user
+
+    payload = decode_token(token)
+    if payload
+      @current_user = User.find_by(id: payload['user_id'])
     end
-  
-    def decode_token(token)
-      JWT.decode(token, Rails.application.secret_key_base).first
-    rescue JWT::DecodeError
-      nil
+
+    unless @current_user
+      render json: { error: 'Unauthorized' }, status: :unauthorized
     end
+  end
+
+  def decode_token(token)
+    JWT.decode(token, Rails.application.secret_key_base).first
+  rescue JWT::DecodeError
+    nil
+  end
 end
-  

@@ -6,6 +6,8 @@ import Link  from 'next/link';
 import { useSearchParams } from 'next/navigation';
 import {Suspense} from 'react';
 import Mycomponent from '../../mycomponent'
+import { Button, Grid } from '@mui/material';
+import top from '../../../../../public/images/top.jpeg';
 
 export default function TasksShow ({ params }: { params: { id: string } }){
     const param = new URLSearchParams();
@@ -20,10 +22,10 @@ export default function TasksShow ({ params }: { params: { id: string } }){
             created_at: Date;
             updated_at: Date;
             user_id: number;
-        };
+    };
         
 
-    const handleGetTaskShow= async() =>{
+    const handleGetTaskShow = async() =>{
         //strongparameterはユーザーから受け取ったデータを直接モデルに渡す場合に重要です。
         
         try{
@@ -65,22 +67,88 @@ export default function TasksShow ({ params }: { params: { id: string } }){
         useEffect(() =>{
             handleGetTaskShow();
         },[]);
-    return (
-        <>
-            <div>
+    return (        <>
+
+        <style jsx>{`
+            @media (min-width: 768px) { 
+              .topmargin{
+                height:200px;
+              }
+              .button1{
+                display:inline-block;
+                margin-right:20px;
+              }
+              .button2{
+                display:inline-block;
+                margin-left:20px;
+              }
+              .item{
+                font-size:20px;
+                margin-top:60px;
+                text-align:center;
+              }
+              .topimage {
+                height: 800px;
+                background-size: cover;
+                background-position: center;
+                margin-top:50px;
+                margin-left:50px;
+                margin-right:50px;
+              }
+            }
+             @media (max-width: 767px) { 
+              .topmargin{
+                height:200px;
+              }
+              .button1{
+                display:inline-block;
+                margin-right:20px;
+              }
+              .button2{
+                display:inline-block;
+                margin-left:20px;
+              }
+              .item{
+                font-size:20px;
+                margin-top:60px;
+                text-align:center;
+              }
+              .topimage {
+                height: 800px;
+                background-size: cover;
+                background-position: center;
+                margin-top:50px;
+                margin-left:50px;
+                margin-right:50px;
+              }
+            }
+    `}</style>
+        
+            <div className="topimage" style={{ backgroundImage: `url(${top.src})` }}>
+                <div className='topmargin'>
+
+                </div>
             {task ? (
                 <div>
-                    <h1>{task.name}</h1>
-                    <p>{task.description}</p>
+                    <p className='item'>仕事名:{task.name}</p>
+                    <p className='item'>説明:{task.description}</p>
+                    <div className='item'>
+                    <div className='button1'>
+                    <Link href={`/tasks/${task.id}/edit`}><Button variant="contained" color="primary">編集</Button></Link>
+                    </div>
+                    <div className='button2'>
+                    <Link href={`/tasks/${task.id}/destroy`}><Button variant="contained" color="primary">削除</Button></Link>
+                    </div>
+                    </div>
                 </div>
             ) : (
                 <p>Loading task details...</p>
             )}
-        </div>
+        
             <Suspense fallback={<div>Loading...</div>}>
                 <Mycomponent />
             </Suspense>
-        
+            </div>
         </>
 
     );

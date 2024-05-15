@@ -1,0 +1,42 @@
+services:
+  db:
+    image: postgres:14.11
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    environment:
+      POSTGRES_DB: tasks_development
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+
+  backend:
+    build:
+      context: ./backend/login_function
+      dockerfile: Dockerfile
+    command: bash -c "rm -f tmp/pids/server.pid && bundle exec rails s -p 3001 -b '0.0.0.0'"
+    volumes:
+      - ./backend/login_function:/app
+    ports:
+      - "3001:3001"
+    environment:
+      RAILS_ENV: development
+      DATABASE_URL: postgresql://postgres:password@db:5432/tasks_development
+    depends_on:
+      - db
+
+  frontend:
+    build:
+      context: ./frontend/login_function
+      dockerfile: Dockerfile
+    volumes:
+      - ./frontend/login_function:/app
+      - /app/node_modules
+    ports:
+      - "3000:3000"
+    environment:
+      REACT_APP_BACKEND_URL: http://localhost:3001
+    depends_on:
+      - backend
+
+volumes:
+  postgres_data:
+#5/14更新

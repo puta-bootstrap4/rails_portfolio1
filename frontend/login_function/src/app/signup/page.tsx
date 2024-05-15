@@ -2,8 +2,19 @@
 import React, { useEffect,useState } from "react";
 import axios from 'axios';
 import { useRouter } from "next/navigation";
+import top from '../../../public/images/top.jpeg';
+import { Button, Grid } from '@mui/material';
+
+
+
+
+
+
+
 
 export default function AuthenticationPage(){
+  const param = new URLSearchParams();
+
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [name, setName] = useState('');
@@ -26,40 +37,115 @@ export default function AuthenticationPage(){
       localStorage.setItem('accessToken', token);
       localStorage.setItem('refreshToken', refresh_token);
       localStorage.setItem('expiresAt', expires_at);
-      params.append("key1","登録完了しました");
+      
+      param.append("key1","登録完了しました");
+      const href = `/?${param}`;
+
       router.push(href);
-    } catch (error: unknown) {
-      if (axios.isAxiosError(error)) {
-        if (error.response) {
-          setError('登録できませんでした');
-        } else {
-          setError('HTTPリクエストが正常に送信されましたが、レスポンスが受信されませんでした');
+    } catch(e:unknown){
+      if(axios.isAxiosError(e)) {
+          if (e.response) {
+              if (e.response.status === 401){
+                  param.append("key1","ログインしてください");
+                  const hreftop = `/?${param}`;
+                  router.push(hreftop);
+              }
+              else{
+                  param.append("key1","登録できませんでした");
+                  const href = `/?${param}`;
+                  router.push(href);
+              }
+          } else{
+              param.append("key1","HTTPリクエストが正常に送信されましたが、レスポンスが受信されませんでした");
+              const href = `/?${param}`;
+              router.push(href);
+  
+          }
+        } else{
+              param.append("key1","予期しないエラーが起こりました");
+              const href = `/?${param}`;
+              router.push(href);
+  
         }
-      } else {
-        setError('予期しないエラーが起こりました');
-        //router.push("/");
-      }
-    }
+
+  }
   };
 
   return (
     <main>
+    <style jsx>{`
+            @media (min-width: 768px) { 
+              .topmargin{
+                height:200px;
+              }
+              #inputitem1{
+                padding-top:200px;
+              }
+              .inputitem{
+                margin-top:60px;
+                text-align:center;
+              }
+              .topimage {
+                height: 800px;
+                background-size: cover;
+                background-position: center;
+                margin-top:50px;
+                margin-left:50px;
+                margin-right:50px;
+              }
+            }
+             @media (max-width: 767px) { 
+              .topmargin{
+                height:200px;
+              }
+              #inputitem1{
+                padding-top:200px;
+              }
+              .inputitem{
+                margin-top:60px;
+                text-align:center;
+              }
+              .topimage {
+                height: 800px;
+                background-size: cover;
+                background-position: center;
+                margin-top:50px;
+                margin-left:50px;
+                margin-right:50px;
+              }
+            }
+    `}
+    </style>
+    <div className="topimage" style={{ backgroundImage: `url(${top.src})` }}>
+
       <form onSubmit={handleSignup}>
+        <div className="topmargin">
+
+        </div>
+        <div className="inputitem">
         <label>
-          Name:
+          名前:
           <input type="name" value={name} onChange={(e) => setName(e.target.value)} />
         </label>
+        </div>
+        <div className="inputitem">
         <label>
-          Email:
+          メールアドレス:
           <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} />
         </label>
+        </div>
+        <div className="inputitem">
         <label>
-          Password:
+          パスワード:
           <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
         </label>
-        <button type="submit">SignUp</button>
-      </form>
+        <div className="inputitem">
+        <Button variant="contained" type="submit" color="primary">SignUP</Button>
+        </div>
+        </div>
+              </form>
       {error && <p>{error}</p>}
+      </div>
     </main>
   );
 }

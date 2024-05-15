@@ -3,9 +3,11 @@ import axios from 'axios';
 import React,{ useState,useEffect } from "react";
 import { useRouter } from "next/navigation";
 import Link  from 'next/link';
-import { useSearchParams } from 'next/navigation';
 import {Suspense} from 'react';
 import Mycomponent from '../mycomponent';
+import top from '../../../../public/images/top.jpeg';
+import { Button, Grid } from '@mui/material';
+
 export default function TasksIndex(){
     const params = new URLSearchParams();
     const router = useRouter();
@@ -55,20 +57,136 @@ export default function TasksIndex(){
     }
 
     }
+    
+        const handleLogout = async () => {
+          try {
+            const token = localStorage.getItem('accessToken');
+            if (token) {
+              await axios.post('http://localhost:3001/logout', {}, {
+                headers: {
+                  Authorization: `Bearer ${token}`
+                }
+              });
+              localStorage.removeItem('accessToken');
+              params.append("key1","ログアウトに成功しました");
+                const href = `/?${params}`;
+                router.push(href)
+    
+            }
+          } catch (error) {
+            console.error('Logout failed', error);
+            alert('Logout failed');
+          }
+        };
+    
+      
+
     useEffect(() => {
         handleGetTaskIndex();
     }, []);
     return(
         <>
-        <div>
-            
-            <h1>Task List</h1>
-            <Link href="/tasks/new">新規作成</Link>
+        <style jsx>{`
+        @media (min-width: 768px) { 
+            .newbutton{
+                margin-top:-40px;
+                margin-bottom:20px;
+            }
+            .buttonmargin{
+                margin-bottom:10px;
+                display:inline-block;
+                margin-left:10px;
+                margin-right:10px;
+            }
+            .title{
+                padding-bottom:30px;
+                padding-top:200px;
+              }
+        .topimage {
+          text-align:center;
+          height: 800px;
+          background-size: cover;
+          background-position: center;
+          margin-top:50px;
+          margin-left:50px;
+          margin-right:50px;
+        }
+        .firstitem{
+          text-align:center;
+          margin-top:50px;
+        }
+        .firsttwo{
+          display:inline-block;
+          margin-right:50px;
+        }
+        .firstthree{
+          display:inline-block;
+          margin-left:50px;
+        }
+        .title{
+          padding-bottom:100px;
+          padding-top:200px;
+        }
+      }
+        @media (max-width: 767px) { 
+            .newbutton{
+                margin-top:-40px;
+                margin-bottom:20px;
+            }
+            .buttonmargin{
+                display:inline-block;
+                margin-bottom:10px;
+                margin-left:10px;
+                margin-right:10px;
+            }
+          .title{
+            padding-bottom:30px;
+            padding-top:200px;
+          }
+          .topimage {
+            text-align:center;
+            height: 800px;
+            background-size: cover;
+            background-position: center;
+            margin-top:50px;
+            margin-left:50px;
+            margin-right:50px;
+          }
+          .firstitem{
+            text-align:center;
+            margin-top:50px;
+          }
+          .firsttwo{
+            display:inline-block;
+            margin-top:50px;
+            margin-left:50px;
+            margin-right:50px;
+
+          }
+          .firstthree{
+            display:inline-block;
+            margin-top:50px;
+            margin-left:50px;
+            margin-right:50px;
+          }
+         }
+      `}</style>
+        <div className='topimage' style={{ backgroundImage: `url(${top.src})` }}>
+            <div className='title'>
+                <h1>仕事一覧</h1>
+            </div>
+            <div className="newbutton">
+            <Button href="/tasks/new" color="success" variant="contained">新規作成</Button>
+            </div>
             <ul>
                 {tasks && tasks.map(task => (
-                    <li key={task.id}>タスク名:{task.name}<Link href={`/tasks/${task.id}/show`}><button>詳細</button></Link><Link href="/tasks/destroy"><button>削除</button></Link></li>
+                    <li key={task.id}>仕事名:{task.name}<div className="buttonmargin"><Button href={`/tasks/${task.id}/show`} variant="contained" color="primary">詳細</Button></div><div className="buttonmargin"><Link href={`/tasks/${task.id}/destroy`}><Button className="buttonmargin" variant="contained" color="primary">削除</Button></Link></div></li>
                 ))}
             </ul>
+            <div>
+            <Button color="primary" variant="contained" onClick={handleLogout}>ログアウト</Button>
+
+            </div>
             {error && <p>{error}</p>}
             <Suspense fallback={<div>Loading...</div>}>
                 <Mycomponent />
