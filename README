@@ -1,2 +1,7 @@
-frontend:React backend:Rails API でログイン機能とサインアップ機能を実装した。JWT認証も実装。最終的にはタスク管理アプリにする。
-まだ途中。
+frontend:React backend:Rails API でログイン機能とサインアップ機能も実装した。JWT認証も実装。タスク管理アプリにした。
+Docker起動方法
+0. docker導入
+docker-compose.ymlがあるディレクトリで以下のコマンドを入力していく。
+1. docker-compose build --no-cache
+2. docker-compose run backend bundle exec rails db:create db:migrate
+3. docker-compose up -d
