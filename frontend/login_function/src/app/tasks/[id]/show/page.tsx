@@ -6,8 +6,10 @@ import Link  from 'next/link';
 import { useSearchParams } from 'next/navigation';
 import {Suspense} from 'react';
 import Mycomponent from '../../mycomponent'
+
 import { Button, Grid } from '@mui/material';
 import top from '../../../../../public/images/top.jpeg';
+
 
 export default function TasksShow ({ params }: { params: { id: string } }){
     const param = new URLSearchParams();
@@ -22,10 +24,12 @@ export default function TasksShow ({ params }: { params: { id: string } }){
             created_at: Date;
             updated_at: Date;
             user_id: number;
+
     };
         
 
     const handleGetTaskShow = async() =>{
+
         //strongparameterはユーザーから受け取ったデータを直接モデルに渡す場合に重要です。
         
         try{
@@ -144,11 +148,13 @@ export default function TasksShow ({ params }: { params: { id: string } }){
             ) : (
                 <p>Loading task details...</p>
             )}
+
         
             <Suspense fallback={<div>Loading...</div>}>
                 <Mycomponent />
             </Suspense>
             </div>
+
         </>
 
     );

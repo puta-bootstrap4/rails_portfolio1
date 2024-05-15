@@ -1,4 +1,5 @@
 module TokenAuthenticatable
+
   extend ActiveSupport::Concern
 
   included do
@@ -11,6 +12,7 @@ module TokenAuthenticatable
     token = request.headers['Authorization']&.split(' ')&.last
     unless token
       return render json: { error: 'Unauthorized' }, status: :unauthorized
+
     end
 
     payload = decode_token(token)

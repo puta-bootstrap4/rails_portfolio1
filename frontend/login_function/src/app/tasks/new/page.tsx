@@ -6,8 +6,10 @@ import {useState} from 'react';
 import axios from 'axios';
 import { useRouter } from "next/navigation";
 
+
 import top from '../../../../public/images/top.jpeg';
 import { Button, Grid } from '@mui/material';
+
 export default function TasksNew (){
     const router = useRouter();  // ここで常にuseRouterを呼び出す
     const [name, setName] = useState('');
@@ -47,6 +49,7 @@ export default function TasksNew (){
 
     return (
         <>
+
         <style jsx>{`
             @media (min-width: 768px) { 
               .topmargin{
@@ -104,14 +107,17 @@ export default function TasksNew (){
                 </label>
                 </div>
                 <div className='item' id="bottommargin">
+
                 <label>
                     説明:
                     <input type="description" value={description} onChange={(e) => setDescription(e.target.value)} />
                 </label>
+
                 </div>
                 <Button variant="contained" color="primary" type="submit">登録</Button>
             </form>
             </div>
+
         </>
     );
 }

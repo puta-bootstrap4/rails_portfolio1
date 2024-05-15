@@ -8,6 +8,7 @@ import Mycomponent from '../mycomponent';
 import top from '../../../../public/images/top.jpeg';
 import { Button, Grid } from '@mui/material';
 
+
 export default function TasksIndex(){
     const params = new URLSearchParams();
     const router = useRouter();
@@ -57,7 +58,7 @@ export default function TasksIndex(){
     }
 
     }
-    
+
         const handleLogout = async () => {
           try {
             const token = localStorage.getItem('accessToken');
@@ -86,6 +87,7 @@ export default function TasksIndex(){
     }, []);
     return(
         <>
+
         <style jsx>{`
         @media (min-width: 768px) { 
             .newbutton{
@@ -187,6 +189,7 @@ export default function TasksIndex(){
             <Button color="primary" variant="contained" onClick={handleLogout}>ログアウト</Button>
 
             </div>
+
             {error && <p>{error}</p>}
             <Suspense fallback={<div>Loading...</div>}>
                 <Mycomponent />

@@ -2,6 +2,7 @@
 import React, { useEffect,useState } from "react";
 import axios from 'axios';
 import { useRouter } from "next/navigation";
+
 import top from '../../../public/images/top.jpeg';
 import { Button, Grid } from '@mui/material';
 
@@ -13,6 +14,15 @@ export default function AuthenticationPage(){
   const router = useRouter();  // ここで常にuseRouterを呼び出す
   const param = new URLSearchParams();
 
+
+export default function AuthenticationPage(){
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [name, setName] = useState('');
+  const [error, setError] = useState('');
+  const router = useRouter();  // ここで常にuseRouterを呼び出す
+  const params = new URLSearchParams();
+  const href = `/?${params}`;
   const handleSignup = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
@@ -28,6 +38,7 @@ export default function AuthenticationPage(){
       localStorage.setItem('accessToken', token);
       localStorage.setItem('refreshToken', refresh_token);
       localStorage.setItem('expiresAt', expires_at);
+
       
       param.append("key1","登録完了しました");
       const href = `/?${param}`;
@@ -60,10 +71,12 @@ export default function AuthenticationPage(){
         }
 
   }
+
   };
 
   return (
     <main>
+
     <style jsx>{`
             @media (min-width: 768px) { 
               .topmargin{
@@ -137,6 +150,7 @@ export default function AuthenticationPage(){
               </form>
       {error && <p>{error}</p>}
       </div>
+
     </main>
   );
 }

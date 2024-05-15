@@ -28,6 +28,7 @@ export default function Login(){
     localStorage.setItem('accessToken',token);
     localStorage.setItem('refreshToken',refresh_token);
     localStorage.setItem('expiresAt',expires_at);
+
       
     param.append("key1","ログイン完了しました");
     const href = `/tasks/index?${param}`;
@@ -45,6 +46,8 @@ export default function Login(){
               param.append("key1","ログインできませんでした");
               const href = `/?${param}`;
               router.push(href);
+
+
           }
       } else{
           param.append("key1","HTTPリクエストが正常に送信されましたが、レスポンスが受信されませんでした");
