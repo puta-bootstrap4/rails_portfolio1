@@ -10,9 +10,16 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_04_28_142725) do
+ActiveRecord::Schema[7.1].define(version: 2024_05_15_025743) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "blacklisted_tokens", force: :cascade do |t|
+    t.string "jti"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["jti"], name: "index_blacklisted_tokens_on_jti"
+  end
 
   create_table "tasks", force: :cascade do |t|
     t.string "name"

@@ -2,6 +2,8 @@
 import React, { useEffect,useState } from "react";
 import axios from 'axios';
 import { useRouter } from "next/navigation";
+import top from '../../../public/images/top.jpeg';
+import { Button, Grid } from '@mui/material';
 
 export default function AuthenticationPage(){
   const [email, setEmail] = useState('');
@@ -62,22 +64,79 @@ export default function AuthenticationPage(){
 
   return (
     <main>
+    <style jsx>{`
+            @media (min-width: 768px) { 
+              .topmargin{
+                height:200px;
+              }
+              #inputitem1{
+                padding-top:200px;
+              }
+              .inputitem{
+                margin-top:60px;
+                text-align:center;
+              }
+              .topimage {
+                height: 800px;
+                background-size: cover;
+                background-position: center;
+                margin-top:50px;
+                margin-left:50px;
+                margin-right:50px;
+              }
+            }
+             @media (max-width: 767px) { 
+              .topmargin{
+                height:200px;
+              }
+              #inputitem1{
+                padding-top:200px;
+              }
+              .inputitem{
+                margin-top:60px;
+                text-align:center;
+              }
+              .topimage {
+                height: 800px;
+                background-size: cover;
+                background-position: center;
+                margin-top:50px;
+                margin-left:50px;
+                margin-right:50px;
+              }
+            }
+    `}
+    </style>
+    <div className="topimage" style={{ backgroundImage: `url(${top.src})` }}>
+
       <form onSubmit={handleSignup}>
+        <div className="topmargin">
+
+        </div>
+        <div className="inputitem">
         <label>
-          Name:
+          名前:
           <input type="name" value={name} onChange={(e) => setName(e.target.value)} />
         </label>
+        </div>
+        <div className="inputitem">
         <label>
-          Email:
+          メールアドレス:
           <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} />
         </label>
+        </div>
+        <div className="inputitem">
         <label>
-          Password:
+          パスワード:
           <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
         </label>
-        <button type="submit">SignUp</button>
-      </form>
+        <div className="inputitem">
+        <Button variant="contained" type="submit" color="primary">SignUP</Button>
+        </div>
+        </div>
+              </form>
       {error && <p>{error}</p>}
+      </div>
     </main>
   );
 }

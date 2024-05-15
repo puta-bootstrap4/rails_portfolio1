@@ -1,5 +1,7 @@
 class AuthenticationController < ApplicationController
-  
+  include TokenAuthenticatable
+
+  before_action :authenticate_user_from_token!, only: [:logout]
 def signup
   user = User.new(user_params)
   if user.save
@@ -44,8 +46,19 @@ def login
     render json: { error: 'Invalid email or password' }, status: :unauthorized  end
 end
 
-private
 
+def logout
+  if @current_user
+    blacklist_token
+    render json: { message: 'Logged out successfully' }, status: :ok
+  else
+    render json: { error: 'No user to log out' }, status: :unauthorized
+  end
+end
+private
+def blacklist_token
+  BlacklistedToken.create!(jti: request.headers['Authorization'].split(' ').last)
+end
 def create_token(user_id)
   expiration = 60.minutes.from_now.to_i  # 15分後が良いが60のタイムスタンプ
   payload = { user_id: user_id, exp: expiration }
